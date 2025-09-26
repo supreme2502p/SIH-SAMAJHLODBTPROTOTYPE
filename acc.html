@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DBT Account Checker</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+  <!-- Navbar -->
+  <div class="flex items-center justify-between px-6 py-4 border-b bg-white">
+    <div class="flex items-center space-x-2">
+      <a href="landing.html" class="text-gray-600 flex items-center space-x-1">
+        <span class="text-sm bg-slate-100 p-3">&larr; Back</span>
+      </a>
+      <span class="text-blue-700 font-bold flex items-center space-x-1">
+        <span>SamajhloDBT Account Checker</span>
+        </span>
+    </div>
+    <!-- Language switch -->
+    <button class="flex items-center space-x-1 border rounded-md px-3 py-1 text-sm text-gray-700">
+      <span class="text-lg"></span>
+      <span>हिंदी</span>
+    </button>
+  </div>
+
+
+  <!-- Main Form -->
+  <div class="flex justify-center mt-12">
+    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Check My Account</h2>
+      <p class="text-center text-gray-600 mb-6">
+        Check if your bank account is enabled for Direct Benefit Transfer(DBT)
+      </p>
+
+
+      <!-- Aadhaar Input -->
+      <label class="block mb-2 text-gray-700">Aadhaar Number</label>
+      <input type="text" placeholder="Enter your 12-digit Aadhaar number" class="w-full px-4 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+
+
+      <!-- Bank Account Input -->
+      <label class="block mb-2 text-gray-700">Bank Account Number</label>
+      <input type="text" placeholder="Enter your bank account number" class="w-full px-4 py-2 border rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+
+
+      <!-- Button -->
+      <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-teal-700 transition">
+        Check Status
+      </button>
+
+
+      <!-- Demo Accounts -->
+      <div class="mt-8 text-gray-700">
+        <p class="font-semibold">Demo Accounts (for testing):</p>
+        <p class="text-sm mt-2">DBT-Enabled: Aadhaar: 1234 5678 9012, Bank Account Number: 1234567890</p>
+        <p class="text-sm">Aadhaar-Linked: Aadhaar: 9876 5432 1098, Bank Account Number: 0987654321</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+tutorial_page.html
