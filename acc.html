@@ -1,64 +1,507 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DBT Account Checker</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check My Account - DBT Status</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+
+        h1 {
+            font-size: 32px;
+            color: #1a3a52;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+
+
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+
+        input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+
+        input::placeholder {
+            color: #999;
+        }
+
+
+        .check-btn {
+            width: 100%;
+            padding: 14px;
+            background: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+
+        .check-btn:hover {
+            background: #3367d6;
+        }
+
+
+        .check-btn:active {
+            transform: translateY(1px);
+        }
+
+
+        .demo-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+
+        .demo-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+
+        .demo-account {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* Result Box Styles */
+        .result-container {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            display: none;
+        }
+
+
+        .result-container.show {
+            display: block;
+        }
+
+
+        .result-container.enabled {
+            border: 2px solid #17a2b8;
+            background: #f0feff;
+        }
+
+
+        .result-container.disabled {
+            border: 2px solid #ffc107;
+            background: #fffef0;
+        }
+
+
+        .result-icon {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 40px;
+        }
+
+
+        .result-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+
+        .result-title.enabled {
+            color: #17a2b8;
+        }
+
+
+        .result-title.disabled {
+            color: #ff9800;
+        }
+
+
+        .status-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+
+        .status-message {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+
+        .account-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+
+        .detail-group {
+            flex: 1;
+        }
+
+
+        .detail-label {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+
+        .detail-value {
+            color: #333;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+
+        .next-steps {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+
+        .next-steps-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+
+        .next-steps ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+
+        .next-steps li {
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            font-size: 14px;
+        }
+
+
+        .next-steps li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+        }
+
+
+        .error-message {
+            color: #d32f2f;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+
+
+        .error-message.show {
+            display: block;
+        }
+
+
+        /* Filled input styles to match the second image */
+        .filled-form input {
+            background: #f8f9fa;
+            font-weight: 500;
+            color: #333;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
-  <!-- Navbar -->
-  <div class="flex items-center justify-between px-6 py-4 border-b bg-white">
-    <div class="flex items-center space-x-2">
-      <a href="landing.html" class="text-gray-600 flex items-center space-x-1">
-        <span class="text-sm bg-slate-100 p-3">&larr; Back</span>
-      </a>
-      <span class="text-blue-700 font-bold flex items-center space-x-1">
-        <span>SamajhloDBT Account Checker</span>
-        </span>
+<body>
+    <div class="container">
+        <h1>Check My Account</h1>
+        <p class="subtitle">Check if your bank account is enabled for Direct Benefit Transfer(DBT)</p>
+       
+        <div class="form-group">
+            <label for="aadhaar">Aadhaar Number</label>
+            <input type="text" id="aadhaar" placeholder="Enter your 12-digit Aadhaar number" maxlength="15">
+            <div class="error-message" id="aadhaar-error">Please enter a valid 12-digit Aadhaar number</div>
+        </div>
+       
+        <div class="form-group">
+            <label for="account">Bank Account Number</label>
+            <input type="text" id="account" placeholder="Enter your bank account number" maxlength="20">
+            <div class="error-message" id="account-error">Please enter a valid bank account number</div>
+        </div>
+       
+        <button class="check-btn" onclick="checkStatus()">Check Status</button>
+       
+        <div id="result-container" class="result-container">
+            <!-- Results will be inserted here -->
+        </div>
+       
+        <div class="demo-section">
+            <h3 class="demo-title">Demo Accounts (for testing):</h3>
+            <div class="demo-account">
+                DBT-Enabled: Aadhaar: 1234 5678 9012, Bank Account Number: 1234567890
+            </div>
+            <div class="demo-account">
+                Aadhaar-Linked: Aadhaar: 9876 5432 1098, Bank Account Number: 0987654321
+            </div>
+        </div>
     </div>
-    <!-- Language switch -->
-    <button class="flex items-center space-x-1 border rounded-md px-3 py-1 text-sm text-gray-700">
-      <span class="text-lg"></span>
-      <span>हिंदी</span>
-    </button>
-  </div>
 
 
-  <!-- Main Form -->
-  <div class="flex justify-center mt-12">
-    <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
-      <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">Check My Account</h2>
-      <p class="text-center text-gray-600 mb-6">
-        Check if your bank account is enabled for Direct Benefit Transfer(DBT)
-      </p>
+    <script>
+        // Demo data for testing
+        const demoAccounts = {
+            '123456789012': {
+                '1234567890': {
+                    status: 'enabled',
+                    bankName: 'State Bank of India',
+                    maskedAccount: '****7890'
+                }
+            },
+            '987654321098': {
+                '0987654321': {
+                    status: 'linked',
+                    bankName: 'Unknown Bank',
+                    maskedAccount: '****4321'
+                }
+            }
+        };
 
 
-      <!-- Aadhaar Input -->
-      <label class="block mb-2 text-gray-700">Aadhaar Number</label>
-      <input type="text" placeholder="Enter your 12-digit Aadhaar number" class="w-full px-4 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+        function validateAadhaar(aadhaar) {
+            // Remove spaces and check if it's 12 digits
+            const cleaned = aadhaar.replace(/\s/g, '');
+            return /^\d{12}$/.test(cleaned);
+        }
 
 
-      <!-- Bank Account Input -->
-      <label class="block mb-2 text-gray-700">Bank Account Number</label>
-      <input type="text" placeholder="Enter your bank account number" class="w-full px-4 py-2 border rounded-md mb-6 focus:outline-none focus:ring-2 focus:ring-teal-500"/>
+        function validateAccount(account) {
+            // Basic validation - at least 8 digits, max 20
+            const cleaned = account.replace(/\s/g, '');
+            return /^\d{8,20}$/.test(cleaned);
+        }
 
 
-      <!-- Button -->
-      <button class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-teal-700 transition">
-        Check Status
-      </button>
+        function checkStatus() {
+            const aadhaarInput = document.getElementById('aadhaar');
+            const accountInput = document.getElementById('account');
+            const aadhaarError = document.getElementById('aadhaar-error');
+            const accountError = document.getElementById('account-error');
+            const resultContainer = document.getElementById('result-container');
+           
+            // Clean input values (remove spaces)
+            const aadhaar = aadhaarInput.value.replace(/\s/g, '');
+            const account = accountInput.value.replace(/\s/g, '');
+           
+            // Reset error messages
+            aadhaarError.classList.remove('show');
+            accountError.classList.remove('show');
+            resultContainer.classList.remove('show');
+           
+            // Validate inputs
+            let hasError = false;
+           
+            if (!validateAadhaar(aadhaar)) {
+                aadhaarError.classList.add('show');
+                hasError = true;
+            }
+           
+            if (!validateAccount(account)) {
+                accountError.classList.add('show');
+                hasError = true;
+            }
+           
+            if (hasError) {
+                return;
+            }
+           
+            // Add filled form class to style inputs
+            document.querySelector('.container').classList.add('filled-form');
+           
+            // Check if this is a demo account
+            let accountInfo = null;
+            if (demoAccounts[aadhaar] && demoAccounts[aadhaar][account]) {
+                accountInfo = demoAccounts[aadhaar][account];
+            } else {
+                // For any other valid input, randomly assign status
+                const randomStatus = Math.random() > 0.5 ? 'enabled' : 'linked';
+                accountInfo = {
+                    status: randomStatus,
+                    bankName: 'Your Bank',
+                    maskedAccount: '****' + account.slice(-4)
+                };
+            }
+           
+            // Display result
+            displayResult(accountInfo, aadhaar, account);
+        }
 
 
-      <!-- Demo Accounts -->
-      <div class="mt-8 text-gray-700">
-        <p class="font-semibold">Demo Accounts (for testing):</p>
-        <p class="text-sm mt-2">DBT-Enabled: Aadhaar: 1234 5678 9012, Bank Account Number: 1234567890</p>
-        <p class="text-sm">Aadhaar-Linked: Aadhaar: 9876 5432 1098, Bank Account Number: 0987654321</p>
-      </div>
-    </div>
-  </div>
+        function displayResult(accountInfo, aadhaar, account) {
+            const resultContainer = document.getElementById('result-container');
+           
+            if (accountInfo.status === 'enabled') {
+                resultContainer.className = 'result-container enabled show';
+                resultContainer.innerHTML = `
+                    <div class="result-icon">🖼️</div>
+                    <div class="result-title enabled">Account Status Result</div>
+                    <div class="status-box">
+                        <div class="status-message">
+                            Your account looks DBT-enabled
+                        </div>
+                    </div>
+                    <div class="account-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Bank Name</div>
+                            <div class="detail-value">${accountInfo.bankName}</div>
+                        </div>
+                        <div class="detail-group" style="text-align: right;">
+                            <div class="detail-label">Account Number</div>
+                            <div class="detail-value">${accountInfo.maskedAccount}</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                resultContainer.className = 'result-container disabled show';
+                resultContainer.innerHTML = `
+                    <div class="result-icon">📁</div>
+                    <div class="result-title disabled">Account Status Result</div>
+                    <div class="status-box">
+                        <div class="status-message">
+                            Your account is only Aadhaar-linked. Please visit your bank to enable DBT.
+                        </div>
+                    </div>
+                    <div class="account-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Bank Name</div>
+                            <div class="detail-value">${accountInfo.bankName}</div>
+                        </div>
+                        <div class="detail-group" style="text-align: right;">
+                            <div class="detail-label">Account Number</div>
+                            <div class="detail-value">${accountInfo.maskedAccount}</div>
+                        </div>
+                    </div>
+                    <div class="next-steps">
+                        <div class="next-steps-title">Next Steps:</div>
+                        <ul>
+                            <li>Visit your bank branch</li>
+                            <li>Request DBT enablement form</li>
+                            <li>Submit required documents</li>
+                            <li>Wait for verification (2-3 days)</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+
+        // Allow Enter key to submit
+        document.getElementById('aadhaar').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkStatus();
+            }
+        });
+       
+        document.getElementById('account').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                checkStatus();
+            }
+        });
+       
+        // Format Aadhaar input for display (adds spaces every 4 digits)
+        document.getElementById('aadhaar').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove all non-digits
+           
+            // Limit to 12 digits
+            if (value.length > 12) {
+                value = value.substring(0, 12);
+            }
+           
+            // Format with spaces every 4 digits
+            let formatted = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += value[i];
+            }
+           
+            e.target.value = formatted;
+        });
+
+
+        // Only allow numbers in account field
+        document.getElementById('account').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove all non-digits
+            e.target.value = value;
+        });
+    </script>
 </body>
 </html>
-tutorial_page.html
